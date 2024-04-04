@@ -47,4 +47,10 @@ def book_page_extractor(url):
     page_info.append(("image_url", "".join(soup.find_all("img")[0].attrs['src'])))
     return page_info
 
+def convert_to_csv(page_extraction, path):
+    '''
+    page_extraction: should be a list of tuples that is extracted from each webpage
+    path: location of where the csv is saved
+    '''
+
 print(book_page_extractor(url))

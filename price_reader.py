@@ -23,6 +23,7 @@ def book_page_extractor(url):
     # universal_ product_code (upc)
     page_info.append(("universal_product_code", list_of_t[0].contents[2].get_text()))
     # book_title
+    page_info.append(("book_title", soup.find_all("li")[3].get_text()))
     # price_including_tax
     page_info.append(("product_description", list_of_t[2].contents[2].get_text()))
     # price_excluding_tax
@@ -36,6 +37,8 @@ def book_page_extractor(url):
     # product_description
     page_info.append(("product_description", "".join(list_of_p[3].contents)))
     # category
+    # .strip to remove the newline
+    page_info.append(("category", (soup.find_all("li")[2].get_text()).strip()))
     # review_rating
     # image_url
     return page_info

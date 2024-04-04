@@ -13,16 +13,18 @@ def book_page_extractor(page_to_parse):
     '''
     page = requests.get(page_to_parse)
     soup = BeautifulSoup(page.content, 'html.parser')
+    # print(soup.prettify())
     page_info = [] # A list of tuples used to store information
     # product_page_url
-    page_info.append(("product_page_url", page_to_parse))
-    # universal_ product_code (upc)
-    search = (soup.find_all("p"))
+    list_of_t = soup.find_all("tr")
     no = 0
-    for each in search:
+    for each in list_of_t:
         no += 1
-        print(str(no) + "------")
-        print(each.get_text())
+        print(str(no) + " ------")
+        print(each.contents[2].get_text())
+    # universal_ product_code (upc)
+    list_of_p = soup.find_all("p")
+    print("".join(list_of_p[3].contents))
     # book_title
     # price_including_tax
     # price_excluding_tax

@@ -40,6 +40,9 @@ def book_page_extractor(url):
     # .strip to remove the newline
     page_info.append(("category", (soup.find_all("li")[2].get_text()).strip()))
     # review_rating
+    # Have to do some odd magic to get the rankings of each of the items.
+    ranking = soup.find_all("p",class_="star-rating")
+    page_info.append(("review_rating", (ranking[0].attrs)['class'][1]))
     # image_url
     return page_info
 

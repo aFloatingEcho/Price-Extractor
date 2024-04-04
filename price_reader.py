@@ -44,6 +44,7 @@ def book_page_extractor(url):
     ranking = soup.find_all("p",class_="star-rating")
     page_info.append(("review_rating", (ranking[0].attrs)['class'][1]))
     # image_url
+    page_info.append(("image_url", "".join(soup.find_all("img")[0].attrs['src'])))
     return page_info
 
 print(book_page_extractor(url))

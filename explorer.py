@@ -81,18 +81,16 @@ def book_page_extractor3(page_to_parse):
     # print(soup.prettify())
     page_info = [] # A list of tuples used to store information
     # product_page_url
-    category = soup.find_all("li")
-    print(soup.find_all("li")[2].get_text())
-    print(soup.find_all("li")[3].get_text())
+    ranking = soup.find_all("p",class_="star-rating")
+    print((ranking[0].attrs)['class'][1])
     no = 0
-    for each in category:
+    for each in ranking:
         no += 1
         print(str(no) + " ------")
-        print(each.contents)
+        print(each.attrs)
     print("....")
     # universal_ product_code (upc)
-    list_of_p = soup.find_all("p")
-    print("".join(list_of_p[3].contents))
+    list_of_p = soup.find_all("star-rating")
     # book_title
     # price_including_tax
     # price_excluding_tax

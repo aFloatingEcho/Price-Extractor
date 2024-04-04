@@ -31,7 +31,7 @@ def book_page_extractor(url):
     # This requires regex due to the nature of the formatting
     available = (list_of_t[5].contents[3].get_text())
     number_available = re.findall('\d+',available)[0]
-    page_info.append("quantity_available", number_available)
+    page_info.append(("quantity_available", number_available))
     # product_description
     page_info.append(("product_description", list_of_t[6].contents[2].get_text()))
     # category

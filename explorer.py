@@ -112,6 +112,7 @@ def book_page_extractor4(page_to_parse):
     page_info = [] # A list of tuples used to store information
     # product_page_url
     image_seek = soup.find_all("img")
+    print(soup.find_all("img")[0].attrs['src'])
     no = 0
     for each in image_seek:
         no += 1

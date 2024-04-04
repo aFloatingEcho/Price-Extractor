@@ -21,7 +21,9 @@ def book_page_extractor(page_to_parse):
     for each in list_of_t:
         no += 1
         print(str(no) + " ------")
-        print(each.contents[2].get_text())
+        print(each.contents)
+    print("....")
+    print(list_of_t[5].contents[3].get_text())
     # universal_ product_code (upc)
     list_of_p = soup.find_all("p")
     print("".join(list_of_p[3].contents))

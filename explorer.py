@@ -25,7 +25,7 @@ def book_page_extractor(page_to_parse):
     print("....")
     available = (list_of_t[5].contents[3].get_text())
     print(available)
-    print(re.findall('\d+',available))
+    print(re.findall('\d+',available)[0])
     # universal_ product_code (upc)
     list_of_p = soup.find_all("p")
     print("".join(list_of_p[3].contents))

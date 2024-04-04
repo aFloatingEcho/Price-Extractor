@@ -49,10 +49,11 @@ def book_page_extractor2(page_to_parse):
     # print(soup.prettify())
     page_info = [] # A list of tuples used to store information
     # product_page_url
-    title = soup.find_all("li", class_="active")
-    print(soup.find_all("li", class_="active")[0].get_text())
+    category = soup.find_all("li")
+    print(soup.find_all("li")[2].get_text())
+    print(soup.find_all("li")[3].get_text())
     no = 0
-    for each in title:
+    for each in category:
         no += 1
         print(str(no) + " ------")
         print(each.contents)

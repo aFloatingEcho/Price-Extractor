@@ -55,12 +55,13 @@ def convert_to_csv(page_extraction, path):
     '''
     columns = []
     output = []
+    # parse each of the files into the columns and the output for each part, this only handles for one part
     for each in page_extraction:
         columns.append(each[0])
         output.append(each[1])
     output_wrapped = []
     output_wrapped.append(output)
-    with (open(path, 'w')) as csvfile:
+    with (open(path, 'a')) as csvfile:
         csvwriter = csv.writer(csvfile)
         csvwriter.writerow(columns)
         csvwriter.writerows(output_wrapped)

@@ -66,5 +66,14 @@ def convert_to_csv(page_extraction, path):
         csvwriter.writerow(columns)
         csvwriter.writerows(output_wrapped)
 
+def single_page_extract(page_extraction):
+    '''
+    Extracts the information from one page into a column.
+    '''
+    output = []
+    for each in page_extraction:
+        output.append(each[1])
+    return output
+
 info = book_page_extractor(url)
 convert_to_csv(info, file_path)

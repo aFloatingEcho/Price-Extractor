@@ -12,21 +12,14 @@ def list_of_books(page_to_parse):
     Function used to extract one specific web page. Takes in a URL, and uses Beautiful Soup to extract
     the list of books.
     '''
-    page = requests.get(page_to_parse)
-    soup = BeautifulSoup(page.content, 'html.parser')
+    main_page_get = requests.get(page_to_parse)
+    main_page = BeautifulSoup(main_page_get.content, 'html.parser')
     # print(soup.prettify())
     page_info = []
-    # product_page_url
-    list_of_books = soup.find_all("a")
-    no = 0
-    for each in list_of_books:
-        no += 1
-        print(str(no) + " ------")
-        print(each.get('href'))
-        print(each.attrs)
-        if(each.has_attr("title")):
-            page_info.append(each.get('href'))
-    print("....")
+    checkPage = check_next_page(main_page)
+    while(checkPage):
+
+
     return page_info
 
 def list_of_books_in_page(page_to_extract):
@@ -50,12 +43,10 @@ def list_of_books_in_page(page_to_extract):
 def check_next_page(page_to_parse):
     '''
     Function to check if there's another page or not.
+    Intakes a soup object to check.
     '''
-    page = requests.get(page_to_parse)
-    soup = BeautifulSoup(page.content, 'html.parser')
-    next_page = []
     no = 0
-    list_of_books = soup.find_all("a")
+    list_of_books = page_to_parse.find_all("a")
     for each in list_of_books:
         no += 1
         if (re.search(re.compile('page-'), each.get('href'))):

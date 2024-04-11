@@ -4,6 +4,7 @@ import csv # Enable writing the data we've obtained into a file.
 import re #Enable the usage of regular expressions
 
 url = "https://books.toscrape.com/catalogue/sapiens-a-brief-history-of-humankind_996/index.html"
+file_path = 'output.csv'
 
 # Extraction Stage 
 def book_page_extractor(url):
@@ -52,5 +53,13 @@ def convert_to_csv(page_extraction, path):
     page_extraction: should be a list of tuples that is extracted from each webpage
     path: location of where the csv is saved
     '''
+    columns = []
+    output = []
+    for each in page_extraction:
+        columns.append(each[0])
+        output.append(each[1])
+    print(columns)
+    print(output)
 
-print(book_page_extractor(url))
+info = book_page_extractor(url)
+convert_to_csv(info, file_path)

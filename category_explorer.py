@@ -22,7 +22,12 @@ def list_of_books(page_to_parse):
         no += 1
         print(str(no) + " ------")
         print(each.get('href'))
+        print(each.attrs)
+        if(each.has_attr("title")):
+            print("true")
+            page_info.append(each.get('href'))
     print("....")
     return page_info
 
-list_of_books(url)
+total = list_of_books(url)
+print(total.__len__())

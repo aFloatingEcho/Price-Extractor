@@ -53,5 +53,8 @@ def check_next_page(page_to_parse):
             return True
     return False
 
-print(check_next_page(url))
-print(check_next_page(url2))
+def next_page_url(url):
+    return url
+
+print(new_string(url))
+print(new_string(url2))

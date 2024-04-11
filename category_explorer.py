@@ -17,9 +17,9 @@ def list_of_books(page_to_parse):
     # print(soup.prettify())
     page_info = []
     checkPage = check_next_page(main_page)
+    currentPage = 2
     while(checkPage):
-
-
+        modified_url = ""
     return page_info
 
 def list_of_books_in_page(page_to_extract):

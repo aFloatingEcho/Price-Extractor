@@ -58,8 +58,12 @@ def convert_to_csv(page_extraction, path):
     for each in page_extraction:
         columns.append(each[0])
         output.append(each[1])
-    print(columns)
-    print(output)
+    output_wrapped = []
+    output_wrapped.append(output)
+    with (open(path, 'w')) as csvfile:
+        csvwriter = csv.writer(csvfile)
+        csvwriter.writerow(columns)
+        csvwriter.writerows(output_wrapped)
 
 info = book_page_extractor(url)
 convert_to_csv(info, file_path)

@@ -16,10 +16,16 @@ def list_of_books(page_to_parse):
     main_page = BeautifulSoup(main_page_get.content, 'html.parser')
     # print(soup.prettify())
     page_info = []
+    page_info = page_info + list_of_books_in_page(main_page)
     checkPage = check_next_page(main_page)
     currentPage = 2
+    modified_url = page_to_parse.replace("index.html", "page-1.html")
     while(checkPage):
-        modified_url = ""
+        modified_url = modified_url.replace(str(currentPage - 1 ), str(currentPage))
+        modified_page = requests.get(modified_url)
+        page_info = page_info + list_of_books_in_page(modified_page)
+        checkPage = check_next_page(modified_url)
+        currentPage += 1
     return page_info
 
 def list_of_books_in_page(page_to_extract):
@@ -54,7 +60,7 @@ def check_next_page(page_to_parse):
     return False
 
 def next_page_url(url):
-    return url
+    modified_url = url.replace("index.html", "page-2.html")
+    return modified_url
 
-print(new_string(url))
-print(new_string(url2))
+print(list_of_books(url))

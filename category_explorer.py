@@ -10,8 +10,8 @@ url3 = "https://books.toscrape.com/catalogue/category/books/fiction_10/page-4.ht
 # Extraction Stage 
 def list_of_books(page_to_parse):
     '''
-    Function used to extract one specific web page. Takes in a URL, and uses Beautiful Soup to extract
-    the list of books.
+    Function used to extract the list of books in a single category, makes use of list_of_books_in_page()
+    as well as check_next_page() to check if the next page exists.
     '''
     main_page_get = requests.get(page_to_parse)
     main_page = BeautifulSoup(main_page_get.content, 'html.parser')

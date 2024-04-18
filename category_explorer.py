@@ -5,6 +5,7 @@ import re
 
 url = "https://books.toscrape.com/catalogue/category/books/fiction_10/index.html"
 url2 = "https://books.toscrape.com/catalogue/category/books/classics_6/index.html"
+url3 = "https://books.toscrape.com/catalogue/category/books/fiction_10/page-4.html"
 
 # Extraction Stage 
 def list_of_books(page_to_parse):
@@ -17,16 +18,21 @@ def list_of_books(page_to_parse):
     # print(soup.prettify())
     page_info = []
     page_info = page_info + list_of_books_in_page(main_page)
-    checkPage = check_next_page(main_page)
-    currentPage = 2
+    currentPage = 1
+    checkPage = check_next_page(main_page, currentPage)
     modified_url = page_to_parse.replace("index.html", "page-1.html")
+    print("Page 1 Completed, Current Book Total: " + str(page_info.__len__()))
     while(checkPage):
-        modified_url = modified_url.replace(str(currentPage), str(currentPage))
+        print("Doing Page " + str(currentPage))
+        modified_url = modified_url.replace(str(currentPage - 1) + ".html", str(currentPage) + ".html")
+        print(modified_url)
         modified_page_get = requests.get(modified_url)
-        modified_page = BeautifulSoup(modified_page_get, 'html.parser')
+        modified_page = BeautifulSoup(modified_page_get.content, 'html.parser')
         page_info = page_info + list_of_books_in_page(modified_page)
-        checkPage = check_next_page(modified_url)
+        checkPage = check_next_page(modified_page, currentPage)
+        print("Page " + str(currentPage) + " Completed, Current Book Total: " + str(page_info.__len__()))
         currentPage += 1
+    print(page_info.__len__())
     return page_info
 
 def list_of_books_in_page(page_to_extract):
@@ -40,23 +46,25 @@ def list_of_books_in_page(page_to_extract):
     no = 0
     for each in list_of_books:
         no += 1
-        print(str(no) + " ------")
-        print(each.get('href'))
-        print(each.attrs)
+        # print(str(no) + " ------")
+        # print(each.get('href'))
+        # print(each.attrs)
         if(each.has_attr("title")):
             page_info.append(each.get('href'))
     return page_info
 
-def check_next_page(page_to_parse):
+def check_next_page(page_to_parse, currentPage):
     '''
     Function to check if there's another page or not.
     Intakes a soup object to check.
     '''
     no = 0
+    next_page = currentPage + 1
+    print(next_page)
     list_of_books = page_to_parse.find_all("a")
     for each in list_of_books:
         no += 1
-        if (re.search(re.compile('page-'), each.get('href'))):
+        if (re.search(re.compile('page-' + str(next_page)), each.get('href'))):
             return True
     return False
 

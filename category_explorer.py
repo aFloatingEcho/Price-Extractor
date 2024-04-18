@@ -21,8 +21,9 @@ def list_of_books(page_to_parse):
     currentPage = 2
     modified_url = page_to_parse.replace("index.html", "page-1.html")
     while(checkPage):
-        modified_url = modified_url.replace(str(currentPage - 1 ), str(currentPage))
-        modified_page = requests.get(modified_url)
+        modified_url = modified_url.replace(str(currentPage), str(currentPage))
+        modified_page_get = requests.get(modified_url)
+        modified_page = BeautifulSoup(modified_page_get, 'html.parser')
         page_info = page_info + list_of_books_in_page(modified_page)
         checkPage = check_next_page(modified_url)
         currentPage += 1

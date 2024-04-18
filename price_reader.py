@@ -50,7 +50,7 @@ def book_page_extractor(url):
     page_info.append(("image_url", "".join(soup.find_all("img")[0].attrs['src'])))
     return page_info
 
-def convert_to_csv(page_extraction, path):
+def convert_to_csv(page_extraction, path, input):
     '''
     page_extraction: should be a list of tuples that is extracted from each webpage
     path: location of where the csv is saved
@@ -63,9 +63,11 @@ def convert_to_csv(page_extraction, path):
         output.append(each[1])
     output_wrapped = []
     output_wrapped.append(output)
+    header = False
     with (open(path, 'a')) as csvfile:
         csvwriter = csv.writer(csvfile)
-        csvwriter.writerow(columns)
+        if(input == 0):
+            csvwriter.writerow(columns)
         csvwriter.writerows(output_wrapped)
 
 def single_page_extract(page_extraction):
@@ -147,8 +149,12 @@ def convert_urls_to_seek(url):
 def category_extraction(url):
     raw_list = list_of_books(url)
     urls_to_seek = convert_urls_to_seek(raw_list)
+    no = 0
     for each in urls_to_seek:
-        book_page_extractor(each)
+        print(each)
+        page_info = book_page_extractor(each)
+        convert_to_csv(page_info, file_path, no)
+        no += 1
     return urls_to_seek
 
 print(category_extraction(url2))

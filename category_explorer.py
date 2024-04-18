@@ -68,8 +68,11 @@ def check_next_page(page_to_parse, currentPage):
             return True
     return False
 
-def next_page_url(url):
-    modified_url = url.replace("index.html", "page-2.html")
+def convert_urls_to_seek(url):
+    modified_url = []
+    for each in url:
+        modified_url.append(each.replace("../../../", "https://books.toscrape.com/catalogue/"))
     return modified_url
 
-print(list_of_books(url))
+url_list = list_of_books(url)
+print(convert_urls_to_seek(url_list))

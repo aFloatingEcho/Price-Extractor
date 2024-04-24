@@ -7,6 +7,7 @@ url = "https://books.toscrape.com/catalogue/sapiens-a-brief-history-of-humankind
 file_path = 'output.csv'
 url2 = "https://books.toscrape.com/catalogue/category/books/fiction_10/index.html"
 
+website_to_scrape = "https://books.toscrape.com/"
 
 # Extraction of Page Info 
 def book_page_extractor(url):

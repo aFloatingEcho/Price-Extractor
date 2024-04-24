@@ -2,6 +2,7 @@ import requests # Used for obtaining the HTML.
 from bs4 import BeautifulSoup # Used for parsing the HTML we've obtained.
 import csv # Enable writing the data we've obtained into a file.
 import re #Enable the usage of regular expressions
+import os #Enable creating a folder if it doesn't exist!
 
 url = "https://books.toscrape.com/catalogue/sapiens-a-brief-history-of-humankind_996/index.html"
 file_path = 'output.csv'
@@ -188,4 +189,26 @@ def list_of_categories(page_to_parse):
         no += 1
     return page_info
 
-print(category_extraction(url2))
+def scrape_website(url):
+    list_of_websites_to_scrape = list_of_categories(url)
+    homepath = "extracted/"
+    for each in list_of_websites_to_scrape[:1]:
+        endpath = homepath + each[1]
+        category = "https://books.toscrape.com/" + each[0]
+        print(category)
+        try:
+            print("Preparing folder to store extraction.")
+            print(endpath)
+            os.mkdir(endpath)
+            print("Folder created.")
+        except OSError as error:
+            print("Folder already exists.")
+    return True
+
+try:
+    print("Preparing folder to store extraction.")
+    os.mkdir("extracted")
+except OSError as error:
+    print("Folder already exists.")
+
+scrape_website(website_to_scrape)

@@ -13,8 +13,9 @@ website_to_scrape = "https://books.toscrape.com/"
 
 # DEBUG VARIABLES
 # Set them to false to remove verobise output to the console.
-SHOW_IMAGE_EXTRACTION_PROCESS = True
-SHOW_BOOK_URL_BEING_EXTRACTED = False
+SHOW_IMAGE_EXTRACTION_PROCESS = False
+SHOW_BOOK_URL_BEING_EXTRACTED = True
+SHOW_BOOK_URL_LIST_EXTRACTED_ = False
 
 # Extraction of Page Info 
 def book_page_extractor(url, filepath):
@@ -116,6 +117,8 @@ def list_of_books(page_to_parse):
     Function used to extract the list of books in a single category, makes use of list_of_books_in_page()
     as well as check_next_page() to check if the next page exists.
     '''
+    if SHOW_BOOK_URL_LIST_EXTRACTED_:
+        print("Getting list of books now.")
     main_page_get = requests.get(page_to_parse)
     main_page = BeautifulSoup(main_page_get.content, 'html.parser')
     # print(soup.prettify())
@@ -124,16 +127,19 @@ def list_of_books(page_to_parse):
     currentPage = 1
     checkPage = check_next_page(main_page, currentPage)
     modified_url = page_to_parse.replace("index.html", "page-1.html")
-    print("Page 1 Completed, Current Book Total: " + str(page_info.__len__()))
+    if SHOW_BOOK_URL_LIST_EXTRACTED_:
+        print("Page 1 Completed, Current Book Total: " + str(page_info.__len__()))
     while(checkPage):
-        print("Doing Page " + str(currentPage))
+        if SHOW_BOOK_URL_LIST_EXTRACTED_:
+            print("Doing Page " + str(currentPage))
         modified_url = modified_url.replace(str(currentPage - 1) + ".html", str(currentPage) + ".html")
         print("Now doing:" + modified_url)
         modified_page_get = requests.get(modified_url)
         modified_page = BeautifulSoup(modified_page_get.content, 'html.parser')
         page_info = page_info + list_of_books_in_page(modified_page)
         checkPage = check_next_page(modified_page, currentPage)
-        print("Page " + str(currentPage) + " Completed, Current Book Total: " + str(page_info.__len__()))
+        if SHOW_BOOK_URL_LIST_EXTRACTED_:
+            print("Page " + str(currentPage) + " Completed, Current Book Total: " + str(page_info.__len__()))
         currentPage += 1
     return page_info
 

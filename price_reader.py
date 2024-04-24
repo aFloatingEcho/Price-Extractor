@@ -96,7 +96,7 @@ def convert_to_csv(page_extraction, path, category_name):
     output_wrapped = []
     output_wrapped.append(output)
     header = False
-    with (open(final_place, 'a')) as csvfile:
+    with (open(final_place, 'a', encoding="utf-8")) as csvfile:
         csvwriter = csv.writer(csvfile)
         if(input == 0):
             csvwriter.writerow(columns)
@@ -192,9 +192,11 @@ def category_extraction(url, filepath, category_name):
     raw_list = list_of_books(url)
     urls_to_seek = convert_urls_to_seek(raw_list)
     no = 0
+    if SHOW_BOOK_URL_BEING_EXTRACTED:
+        print("Now scraping book info.")
     for each in urls_to_seek:
         if SHOW_BOOK_URL_BEING_EXTRACTED:
-            print("Extracting:" + each)
+            print("Extracting: " + each)
         page_info = book_page_extractor(each, filepath)
         convert_to_csv(page_info, filepath, category_name)
         no += 1

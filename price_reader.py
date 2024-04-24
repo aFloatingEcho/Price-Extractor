@@ -14,7 +14,7 @@ website_to_scrape = "https://books.toscrape.com/"
 # DEBUG VARIABLES
 # Set them to false to remove verobise output to the console.
 SHOW_IMAGE_EXTRACTION_PROCESS = True
-SHOW_BOOK_URL_BEING_EXTRACTED = True
+SHOW_BOOK_URL_BEING_EXTRACTED = False
 
 # Extraction of Page Info 
 def book_page_extractor(url, filepath):
@@ -135,7 +135,6 @@ def list_of_books(page_to_parse):
         checkPage = check_next_page(modified_page, currentPage)
         print("Page " + str(currentPage) + " Completed, Current Book Total: " + str(page_info.__len__()))
         currentPage += 1
-    print(page_info.__len__())
     return page_info
 
 def list_of_books_in_page(page_to_extract):
@@ -163,7 +162,6 @@ def check_next_page(page_to_parse, currentPage):
     '''
     no = 0
     next_page = currentPage + 1
-    print(next_page)
     list_of_books = page_to_parse.find_all("a")
     for each in list_of_books:
         no += 1

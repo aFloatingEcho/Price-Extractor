@@ -28,7 +28,8 @@ def list_of_categories(page_to_parse):
 
 def list_of_categories2(page_to_parse):
     '''
-    Function used to obtain the list of categories off of books.toscrape.com 
+    Function used to obtain the list of categories off of books.toscrape.com and prep the system to scrape
+    each of the given categories.
     '''
     main_page_get = requests.get(page_to_parse)
     main_page = BeautifulSoup(main_page_get.content, 'html.parser')
@@ -36,6 +37,7 @@ def list_of_categories2(page_to_parse):
     list_of_categories = list_of_ul[0].find_all("li")
     print(list_of_categories)
     no = 0
+    page_info = []
     # We skip over the first one because it's unusual.
     for each in list_of_categories[1:]:
         print(str(no) + " ...")
@@ -49,8 +51,8 @@ def list_of_categories2(page_to_parse):
         text = text.replace("\n                            \n                        \n","")
         print(link)
         print(repr(text))
+        page_info.append([link, text])
         no += 1
-    page_info = []
     return page_info
 
 def list_of_categories3(page_to_parse):

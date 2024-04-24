@@ -38,7 +38,15 @@ def book_page_extractor(url):
     number_available = re.findall('\d+',available)[0]
     page_info.append(("quantity_available", number_available))
     # product_description
-    page_info.append(("product_description", "".join(list_of_p[3].contents)))
+    print("----")
+    this = soup.find_all("meta")
+    no = 0
+    for each in this:
+        print(no)
+        print(each.attrs)
+        no += 1
+    print(this[2].attrs['content'])
+    page_info.append(("product_description", this[2].attrs['content']))
     # category
     # .strip to remove the newline
     page_info.append(("category", (soup.find_all("li")[2].get_text()).strip()))

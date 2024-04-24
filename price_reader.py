@@ -28,7 +28,7 @@ def book_page_extractor(url, filepath):
     # There's a table in the HTML that contains all the information that we need, so we'll be using that.
     # In more complicated webpages, we may need to make use of more compliated parsing mechanisms.
     list_of_t = soup.find_all("tr")
-    list_of_p = soup.find_all("p")
+    list_of_meta = soup.find_all("meta")
     page_info = [] # A list of tuples used to store information
     # product_page_url
     page_info.append(("product_page_url", url))
@@ -47,7 +47,7 @@ def book_page_extractor(url, filepath):
     number_available = re.findall('\d+',available)[0]
     page_info.append(("quantity_available", number_available))
     # product_description
-    page_info.append(("product_description", "".join(list_of_p[3].contents)))
+    page_info.append(("product_description", "".join(list_of_meta[2].attrs['content'])))
     # category
     # .strip to remove the newline
     page_info.append(("category", (soup.find_all("li")[2].get_text()).strip()))

@@ -2,6 +2,8 @@ import requests # Used for obtaining the HTML.
 from bs4 import BeautifulSoup # Used for parsing the HTML we've obtained.
 import csv # Enable writing the data we've obtained into a file.
 import re
+import os
+import string
 
 url = "https://books.toscrape.com/catalogue/sapiens-a-brief-history-of-humankind_996/index.html"
 
@@ -118,7 +120,16 @@ def book_page_extractor4(page_to_parse):
         no += 1
         print(str(no) + " ------")
         print(each.attrs)
-    print("....")
+        print(each.attrs['src'].replace("../../", "https://books.toscrape.com/"))
+        try:
+            r = requests.get(each.attrs['src'].replace("../../", "https://books.toscrape.com/")).content
+            name = each.attrs['alt']
+            safety = name.translate(str.maketrans("","", string.punctuation)) + ".jpg" # This line is meant to delete all invalid characters out of a filename.
+            print(safety)
+            with open(safety, 'wb') as handler:
+                handler.write(r)  
+        except:
+            print("Fail!")
     # universal_ product_code (upc)
     list_of_p = soup.find_all("star-rating")
     # book_title

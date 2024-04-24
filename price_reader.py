@@ -133,7 +133,8 @@ def list_of_books(page_to_parse):
         if SHOW_BOOK_URL_LIST_EXTRACTED_:
             print("Doing Page " + str(currentPage))
         modified_url = modified_url.replace(str(currentPage - 1) + ".html", str(currentPage) + ".html")
-        print("Now doing:" + modified_url)
+        if SHOW_BOOK_URL_LIST_EXTRACTED_:
+            print("Now doing:" + modified_url)
         modified_page_get = requests.get(modified_url)
         modified_page = BeautifulSoup(modified_page_get.content, 'html.parser')
         page_info = page_info + list_of_books_in_page(modified_page)

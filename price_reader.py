@@ -234,7 +234,7 @@ def scrape_website(url):
     list_of_websites_to_scrape = list_of_categories(url)
     homepath = "extracted/"
     no = 1
-    for each in list_of_websites_to_scrape[:1]:
+    for each in list_of_websites_to_scrape:
         endpath = homepath + each[1]
         category_url = "https://books.toscrape.com/" + each[0]
         print("Extracting category: ["+ each[1] + "]")

@@ -11,6 +11,9 @@ url2 = "https://books.toscrape.com/catalogue/category/books/fiction_10/index.htm
 
 website_to_scrape = "https://books.toscrape.com/"
 
+# DEBUG VARIABLES
+SHOW_IMAGE_EXTRACTION_PROCESS = True
+
 # Extraction of Page Info 
 def book_page_extractor(url, filepath):
     '''
@@ -53,7 +56,8 @@ def book_page_extractor(url, filepath):
     page_info.append(("image_url", "".join(soup.find_all("img")[0].attrs['src'])))
     # Download the image
     try:
-        print("Attempting to download book image.")
+        if SHOW_IMAGE_EXTRACTION_PROCESS:
+            print("Attempting to download book image.")
         # Prep for url download.
         image_url = "".join(soup.find_all("img")[0].attrs['src'])
         image_url = image_url.replace("../../", "https://books.toscrape.com/")
@@ -64,9 +68,12 @@ def book_page_extractor(url, filepath):
         safety = filepath + "/" + title.translate(str.maketrans("","", string.punctuation)) + ".jpg"
         with open(safety, 'wb') as handler:
             handler.write(image)
-        print("Image downloaded.")
+        if SHOW_IMAGE_EXTRACTION_PROCESS:
+            print("Image downloaded.")
     except:
-        print(page_info[2] + " failed to download.")
+        if SHOW_IMAGE_EXTRACTION_PROCESS:
+            print(soup.find_all("li")[3].get_text())
+            print("Image failed  to download.")
 
     return page_info
 
@@ -119,7 +126,7 @@ def list_of_books(page_to_parse):
     while(checkPage):
         print("Doing Page " + str(currentPage))
         modified_url = modified_url.replace(str(currentPage - 1) + ".html", str(currentPage) + ".html")
-        print(modified_url)
+        print("Now doing:" + modified_url)
         modified_page_get = requests.get(modified_url)
         modified_page = BeautifulSoup(modified_page_get.content, 'html.parser')
         page_info = page_info + list_of_books_in_page(modified_page)

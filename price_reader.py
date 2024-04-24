@@ -12,6 +12,7 @@ url2 = "https://books.toscrape.com/catalogue/category/books/fiction_10/index.htm
 website_to_scrape = "https://books.toscrape.com/"
 
 # DEBUG VARIABLES
+# Set them to false to remove verobise output to the console.
 SHOW_IMAGE_EXTRACTION_PROCESS = True
 SHOW_BOOK_URL_BEING_EXTRACTED = True
 

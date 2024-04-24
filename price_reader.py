@@ -63,7 +63,8 @@ def book_page_extractor(url, filepath):
         # This line below is meant to delete all invalid characters out of a filename.
         safety = filepath + "/" + title.translate(str.maketrans("","", string.punctuation)) + ".jpg"
         with open(safety, 'wb') as handler:
-            handler.write(image)  
+            handler.write(image)
+        print("Image downloaded.")
     except:
         print(page_info[2] + " failed to download.")
 
@@ -196,12 +197,12 @@ def list_of_categories(page_to_parse):
     main_page = BeautifulSoup(main_page_get.content, 'html.parser')
     list_of_ul = main_page.find_all("ul", class_="nav")
     list_of_categories = list_of_ul[0].find_all("li")
-    print(list_of_categories)
+    # print(list_of_categories)
     no = 0
     page_info = []
     # We skip over the first one because it's unusual.
     for each in list_of_categories[1:]:
-        print(str(no) + " ...")
+        # print(str(no) + " ...")
         # print(repr(each.text))
         # print("--")
         # print(each.contents[1].attrs)
@@ -210,34 +211,42 @@ def list_of_categories(page_to_parse):
         link = each.contents[1]['href']
         text = (each.text).replace("\n\n                            \n                                ","")
         text = text.replace("\n                            \n                        \n","")
-        print(link)
-        print(repr(text))
+        # print(link)
+        # print(repr(text))
         page_info.append([link, text])
         no += 1
+    print("Found " + str(no) + " categories. Beginning extraction.")
     return page_info
 
 def scrape_website(url):
+    '''
+    Scrapes the books.toscrape website given its homepage.
+    '''
     list_of_websites_to_scrape = list_of_categories(url)
     homepath = "extracted/"
+    no = 1
     for each in list_of_websites_to_scrape[:1]:
         endpath = homepath + each[1]
         category_url = "https://books.toscrape.com/" + each[0]
-        print(each[1])
+        print("Extracting category: ["+ each[1] + "]")
         try:
             print("Preparing folder for [" + each[1] + "] to store extraction.")
-            print(endpath)
             os.mkdir(endpath)
             print("Folder created.")
         except OSError as error:
             print("Folder already exists.")
         endpath = endpath + "/"
+        print("Saving to " + endpath)
         category_extraction(category_url, endpath, each[1])
+        print("Extraction for [" + each[1] + "] completed.")
+        print(str(list_of_websites_to_scrape.__len__() - no) + " categories remain.")
+        no += 1
     return True
 
 try:
     print("Preparing folder to store extraction.")
     os.mkdir("extracted")
 except OSError as error:
-    print("Folder already exists.")
+    print("Folder already exists. Proceeding.")
 
 scrape_website(website_to_scrape)

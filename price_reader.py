@@ -69,6 +69,11 @@ def book_page_extractor(url, filepath):
         title = soup.find_all("li")[3].get_text()
         # This line below is meant to delete all invalid characters out of a filename.
         safety = filepath + "/" + title.translate(str.maketrans("","", string.punctuation)) + ".jpg"
+        no = 2
+        while os.path.isfile(safety):
+            safety = safety.replace(".jpg","")
+            safety = safety + "(" + str(no) + ").jpg"
+            no +=1
         with open(safety, 'wb') as handler:
             handler.write(image)
         if SHOW_IMAGE_EXTRACTION_PROCESS:

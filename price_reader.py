@@ -11,7 +11,7 @@ url2 = "https://books.toscrape.com/catalogue/category/books/fiction_10/index.htm
 website_to_scrape = "https://books.toscrape.com/"
 
 # Extraction of Page Info 
-def book_page_extractor(url):
+def book_page_extractor(url, filepath):
     '''
     Function used to extract one specific web page. Takes in a URL, and uses Beautiful Soup to extract
     each part of the book webpage.
@@ -161,7 +161,7 @@ def category_extraction(url, filepath):
     no = 0
     for each in urls_to_seek:
         print(each)
-        page_info = book_page_extractor(each)
+        page_info = book_page_extractor(each, filepath)
         convert_to_csv(page_info, filepath, no)
         no += 1
     return urls_to_seek

@@ -204,7 +204,7 @@ def scrape_website(url):
             print("Folder created.")
         except OSError as error:
             print("Folder already exists.")
-        endpath = endpath + each[1] + ".csv"
+        endpath = endpath + "/" + each[1] + ".csv"
         category_extraction(category_url, endpath)
     return True
 

@@ -148,14 +148,14 @@ def convert_urls_to_seek(url):
         modified_url.append(each.replace("../../../", "https://books.toscrape.com/catalogue/"))
     return modified_url
 
-def category_extraction(url):
+def category_extraction(url, filepath):
     raw_list = list_of_books(url)
     urls_to_seek = convert_urls_to_seek(raw_list)
     no = 0
     for each in urls_to_seek:
         print(each)
         page_info = book_page_extractor(each)
-        convert_to_csv(page_info, file_path, no)
+        convert_to_csv(page_info, filepath, no)
         no += 1
     return urls_to_seek
 
@@ -163,7 +163,8 @@ def list_of_categories(page_to_parse):
     '''
     Function used to obtain the list of categories off of books.toscrape.com and prep the system to scrape
     each of the given categories.
-    It returns an array of categories to search.
+    It returns an array of categories to search, of which the first point is the url, and the second is the
+    category name.
     '''
     main_page_get = requests.get(page_to_parse)
     main_page = BeautifulSoup(main_page_get.content, 'html.parser')
@@ -194,15 +195,17 @@ def scrape_website(url):
     homepath = "extracted/"
     for each in list_of_websites_to_scrape[:1]:
         endpath = homepath + each[1]
-        category = "https://books.toscrape.com/" + each[0]
-        print(category)
+        category_url = "https://books.toscrape.com/" + each[0]
+        print(each[1])
         try:
-            print("Preparing folder to store extraction.")
+            print("Preparing folder for [" + each[1] + "] to store extraction.")
             print(endpath)
             os.mkdir(endpath)
             print("Folder created.")
         except OSError as error:
             print("Folder already exists.")
+        endpath = endpath + each[1] + ".csv"
+        category_extraction(category_url, endpath)
     return True
 
 try:

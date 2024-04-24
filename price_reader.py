@@ -13,6 +13,7 @@ website_to_scrape = "https://books.toscrape.com/"
 
 # DEBUG VARIABLES
 SHOW_IMAGE_EXTRACTION_PROCESS = True
+SHOW_BOOK_URL_BEING_EXTRACTED = True
 
 # Extraction of Page Info 
 def book_page_extractor(url, filepath):
@@ -187,7 +188,8 @@ def category_extraction(url, filepath, category_name):
     urls_to_seek = convert_urls_to_seek(raw_list)
     no = 0
     for each in urls_to_seek:
-        print(each)
+        if SHOW_BOOK_URL_BEING_EXTRACTED:
+            print("Extracting:" + each)
         page_info = book_page_extractor(each, filepath)
         convert_to_csv(page_info, filepath, category_name)
         no += 1

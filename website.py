@@ -28,8 +28,7 @@ def list_of_categories(page_to_parse):
 
 def list_of_categories2(page_to_parse):
     '''
-    Function used to extract the list of books in a single category, makes use of list_of_books_in_page()
-    as well as check_next_page() to check if the next page exists.
+    Function used to obtain the list of categories off of books.toscrape.com 
     '''
     main_page_get = requests.get(page_to_parse)
     main_page = BeautifulSoup(main_page_get.content, 'html.parser')
@@ -37,14 +36,20 @@ def list_of_categories2(page_to_parse):
     list_of_categories = list_of_ul[0].find_all("li")
     print(list_of_categories)
     no = 0
-    for each in list_of_categories:
+    # We skip over the first one because it's unusual.
+    for each in list_of_categories[1:]:
         print(str(no) + " ...")
         # print(repr(each.text))
-        print("--")
-        print(each)
+        # print("--")
+        # print(each.contents[1].attrs)
+        link = each.contents[1]['href']
+        text = (each.text).replace("\n\n                            \n                                ","")
+        text = text.replace("\n                            \n                        \n","")
+        print(link)
+        print(repr(text))
         no += 1
     page_info = []
     return page_info
 
-print(list_of_categories(url))
+print(list_of_categories2(url))
 

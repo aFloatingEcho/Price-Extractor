@@ -69,13 +69,15 @@ def book_page_extractor(url, filepath):
 
     return page_info
 
-def convert_to_csv(page_extraction, path, input):
+def convert_to_csv(page_extraction, path, category_name):
     '''
     page_extraction: should be a list of tuples that is extracted from each webpage
-    path: location of where the csv is saved
+    path: location of the folder of where the csv should be saved
+    category_name: name of the category
     '''
     columns = []
     output = []
+    final_place = path + "/" + category_name + ".csv"
     # parse each of the files into the columns and the output for each part, this only handles for one part
     for each in page_extraction:
         columns.append(each[0])
@@ -83,7 +85,7 @@ def convert_to_csv(page_extraction, path, input):
     output_wrapped = []
     output_wrapped.append(output)
     header = False
-    with (open(path, 'a')) as csvfile:
+    with (open(final_place, 'a')) as csvfile:
         csvwriter = csv.writer(csvfile)
         if(input == 0):
             csvwriter.writerow(columns)
@@ -169,7 +171,7 @@ def convert_urls_to_seek(url):
         modified_url.append(each.replace("../../../", "https://books.toscrape.com/catalogue/"))
     return modified_url
 
-def category_extraction(url, filepath):
+def category_extraction(url, filepath, category_name):
     '''
     Takes the URL of a category, and the filepath to store the contents of the extraction in their own folder.
     '''
@@ -179,7 +181,7 @@ def category_extraction(url, filepath):
     for each in urls_to_seek:
         print(each)
         page_info = book_page_extractor(each, filepath)
-        convert_to_csv(page_info, filepath, no)
+        convert_to_csv(page_info, filepath, category_name)
         no += 1
     return urls_to_seek
 
@@ -228,8 +230,8 @@ def scrape_website(url):
             print("Folder created.")
         except OSError as error:
             print("Folder already exists.")
-        endpath = endpath + "/" + each[1] + ".csv"
-        category_extraction(category_url, endpath)
+        endpath = endpath + "/"
+        category_extraction(category_url, endpath, each[1])
     return True
 
 try:

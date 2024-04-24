@@ -143,12 +143,19 @@ def check_next_page(page_to_parse, currentPage):
     return False
 
 def convert_urls_to_seek(url):
+    '''
+    Modifies a list of books that was extracted, and converts the entire array into
+    usable links that the scraper can use.
+    '''
     modified_url = []
     for each in url:
         modified_url.append(each.replace("../../../", "https://books.toscrape.com/catalogue/"))
     return modified_url
 
 def category_extraction(url, filepath):
+    '''
+    Takes the URL of a category, and the filepath to store the contents of the extraction in their own folder.
+    '''
     raw_list = list_of_books(url)
     urls_to_seek = convert_urls_to_seek(raw_list)
     no = 0

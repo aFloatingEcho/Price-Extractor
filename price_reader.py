@@ -80,7 +80,7 @@ def book_page_extractor(url, filepath):
 
     return page_info
 
-def convert_to_csv(page_extraction, path, category_name):
+def convert_to_csv(page_extraction, path, category_name, input):
     '''
     page_extraction: should be a list of tuples that is extracted from each webpage
     path: location of the folder of where the csv should be saved
@@ -198,7 +198,7 @@ def category_extraction(url, filepath, category_name):
         if SHOW_BOOK_URL_BEING_EXTRACTED:
             print("Extracting: " + each)
         page_info = book_page_extractor(each, filepath)
-        convert_to_csv(page_info, filepath, category_name)
+        convert_to_csv(page_info, filepath, category_name, no)
         no += 1
     return urls_to_seek
 

@@ -9,37 +9,45 @@ url = "https://books.toscrape.com/catalogue/alice-in-wonderland-alices-adventure
 url2 = "https://books.toscrape.com/catalogue/sapiens-a-brief-history-of-humankind_996/index.html"
 
 # Extraction Stage 
-def book_page_extractor(page_to_parse):
+def book_page_extractor(url):
     '''
     Function used to extract one specific web page. Takes in a URL, and uses Beautiful Soup to extract
     each part of the book webpage.
     '''
-    page = requests.get(page_to_parse)
+    page = requests.get(url)
     soup = BeautifulSoup(page.content, 'html.parser')
-    # print(soup.prettify())
+    # There's a table in the HTML that contains all the information that we need, so we'll be using that.
+    # In more complicated webpages, we may need to make use of more compliated parsing mechanisms.
+    list_of_t = soup.find_all("tr")
+    list_of_p = soup.find_all("p")
     page_info = [] # A list of tuples used to store information
     # product_page_url
-    list_of_t = soup.find_all("tr")
-    no = 0
-    for each in list_of_t:
-        no += 1
-        print(str(no) + " ------")
-        print(each.contents)
-    print("....")
-    available = (list_of_t[5].contents[3].get_text())
-    print(available)
-    print(re.findall('\d+',available)[0])
+    page_info.append(("product_page_url", url))
     # universal_ product_code (upc)
-    list_of_p = soup.find_all("p")
-    print("".join(list_of_p[3].contents))
+    page_info.append(("universal_product_code", list_of_t[0].contents[2].get_text()))
     # book_title
+    page_info.append(("book_title", soup.find_all("li")[3].get_text()))
     # price_including_tax
+    page_info.append(("product_description", list_of_t[2].contents[2].get_text()))
     # price_excluding_tax
+    page_info.append(("product_description", list_of_t[3].contents[2].get_text()))
     # quantity_available
+    # this particular piece of information is embedded in a string, so we have to extract the information from the string.
+    # This requires regex due to the nature of the formatting
+    available = (list_of_t[5].contents[3].get_text())
+    number_available = re.findall('\d+',available)[0]
+    page_info.append(("quantity_available", number_available))
     # product_description
+    page_info.append(("product_description", "".join(list_of_p[3].contents)))
     # category
+    # .strip to remove the newline
+    page_info.append(("category", (soup.find_all("li")[2].get_text()).strip()))
     # review_rating
+    # Have to do some odd magic to get the rankings of each of the items.
+    ranking = soup.find_all("p",class_="star-rating")
+    page_info.append(("review_rating", (ranking[0].attrs)['class'][1]))
     # image_url
+    page_info.append(("image_url", "".join(soup.find_all("img")[0].attrs['src'])))
     return page_info
 
 def book_page_extractor2(page_to_parse):
@@ -144,4 +152,5 @@ def book_page_extractor4(page_to_parse):
     return page_info
 
 
+book_page_extractor(url2)
 book_page_extractor(url)

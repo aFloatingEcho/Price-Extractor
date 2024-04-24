@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup # Used for parsing the HTML we've obtained.
 import csv # Enable writing the data we've obtained into a file.
 import re #Enable the usage of regular expressions
 import os #Enable creating a folder if it doesn't exist!
+import string
 
 url = "https://books.toscrape.com/catalogue/sapiens-a-brief-history-of-humankind_996/index.html"
 file_path = 'output.csv'
@@ -50,6 +51,22 @@ def book_page_extractor(url, filepath):
     page_info.append(("review_rating", (ranking[0].attrs)['class'][1]))
     # image_url
     page_info.append(("image_url", "".join(soup.find_all("img")[0].attrs['src'])))
+    # Download the image
+    try:
+        print("Attempting to download book image.")
+        # Prep for url download.
+        image_url = "".join(soup.find_all("img")[0].attrs['src'])
+        image_url = image_url.replace("../../", "https://books.toscrape.com/")
+        image = requests.get(image_url).content
+        # Get the title for the image.
+        title = soup.find_all("li")[3].get_text()
+        # This line below is meant to delete all invalid characters out of a filename.
+        safety = filepath + "/" + title.translate(str.maketrans("","", string.punctuation)) + ".jpg"
+        with open(safety, 'wb') as handler:
+            handler.write(image)  
+    except:
+        print(page_info[2] + " failed to download.")
+
     return page_info
 
 def convert_to_csv(page_extraction, path, input):

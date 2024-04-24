@@ -5,7 +5,8 @@ import re
 import os
 import string
 
-url = "https://books.toscrape.com/catalogue/sapiens-a-brief-history-of-humankind_996/index.html"
+url = "https://books.toscrape.com/catalogue/alice-in-wonderland-alices-adventures-in-wonderland-1_5/index.html"
+url2 = "https://books.toscrape.com/catalogue/sapiens-a-brief-history-of-humankind_996/index.html"
 
 # Extraction Stage 
 def book_page_extractor(page_to_parse):
@@ -143,4 +144,4 @@ def book_page_extractor4(page_to_parse):
     return page_info
 
 
-book_page_extractor4(url)
+book_page_extractor(url)

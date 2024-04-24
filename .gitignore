@@ -1,5 +1,7 @@
 # Prevent this project from committing *.csv files.
 *.csv
+# Prevent this project from copying an entire folder.
+extracted/
 
 # This entire part was provided by Github to filter out files for .py files
 # Byte-compiled / optimized / DLL files

@@ -158,4 +158,34 @@ def category_extraction(url):
         no += 1
     return urls_to_seek
 
+def list_of_categories(page_to_parse):
+    '''
+    Function used to obtain the list of categories off of books.toscrape.com and prep the system to scrape
+    each of the given categories.
+    It returns an array of categories to search.
+    '''
+    main_page_get = requests.get(page_to_parse)
+    main_page = BeautifulSoup(main_page_get.content, 'html.parser')
+    list_of_ul = main_page.find_all("ul", class_="nav")
+    list_of_categories = list_of_ul[0].find_all("li")
+    print(list_of_categories)
+    no = 0
+    page_info = []
+    # We skip over the first one because it's unusual.
+    for each in list_of_categories[1:]:
+        print(str(no) + " ...")
+        # print(repr(each.text))
+        # print("--")
+        # print(each.contents[1].attrs)
+        # How we figured it out: we used a for loop to inspect each of the objects within each itself,
+        # turns out that's an object that somehow manages to do itself.
+        link = each.contents[1]['href']
+        text = (each.text).replace("\n\n                            \n                                ","")
+        text = text.replace("\n                            \n                        \n","")
+        print(link)
+        print(repr(text))
+        page_info.append([link, text])
+        no += 1
+    return page_info
+
 print(category_extraction(url2))

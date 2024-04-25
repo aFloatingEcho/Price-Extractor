@@ -18,7 +18,7 @@ SHOW_BOOK_URL_BEING_EXTRACTED = False
 SHOW_BOOK_URL_LIST_EXTRACTED_ = False
 
 # Extraction of Page Info 
-def book_page_extractor(url, filepath):
+def book_page_extractor(url, filepath, download_image):
     '''
     Function used to extract one specific web page. Takes in a URL, and uses Beautiful Soup to extract
     each part of the book webpage.
@@ -58,30 +58,31 @@ def book_page_extractor(url, filepath):
     # image_url
     page_info.append(("image_url", "".join(soup.find_all("img")[0].attrs['src'])))
     # Download the image
-    try:
-        if SHOW_IMAGE_EXTRACTION_PROCESS:
-            print("Attempting to download book image.")
-        # Prep for url download.
-        image_url = "".join(soup.find_all("img")[0].attrs['src'])
-        image_url = image_url.replace("../../", "https://books.toscrape.com/")
-        image = requests.get(image_url).content
-        # Get the title for the image.
-        title = soup.find_all("li")[3].get_text()
-        # This line below is meant to delete all invalid characters out of a filename.
-        safety = filepath + "/" + title.translate(str.maketrans("","", string.punctuation)) + ".jpg"
-        no = 2
-        while os.path.isfile(safety):
-            safety = safety.replace(".jpg","")
-            safety = safety + "(" + str(no) + ").jpg"
-            no +=1
-        with open(safety, 'wb') as handler:
-            handler.write(image)
-        if SHOW_IMAGE_EXTRACTION_PROCESS:
-            print("Image downloaded.")
-    except:
-        if SHOW_IMAGE_EXTRACTION_PROCESS:
-            print(soup.find_all("li")[3].get_text())
-            print("Image failed  to download.")
+    if download_image:
+        try:
+            if SHOW_IMAGE_EXTRACTION_PROCESS:
+                print("Attempting to download book image.")
+            # Prep for url download.
+            image_url = "".join(soup.find_all("img")[0].attrs['src'])
+            image_url = image_url.replace("../../", "https://books.toscrape.com/")
+            image = requests.get(image_url).content
+            # Get the title for the image.
+            title = soup.find_all("li")[3].get_text()
+            # This line below is meant to delete all invalid characters out of a filename.
+            safety = filepath + "/" + title.translate(str.maketrans("","", string.punctuation)) + ".jpg"
+            no = 2
+            while os.path.isfile(safety):
+                safety = safety.replace(".jpg","")
+                safety = safety + "(" + str(no) + ").jpg"
+                no +=1
+            with open(safety, 'wb') as handler:
+                handler.write(image)
+            if SHOW_IMAGE_EXTRACTION_PROCESS:
+                print("Image downloaded.")
+        except:
+            if SHOW_IMAGE_EXTRACTION_PROCESS:
+                print(soup.find_all("li")[3].get_text())
+                print("Image failed  to download.")
 
     return page_info
 
@@ -191,7 +192,7 @@ def convert_urls_to_seek(url):
         modified_url.append(each.replace("../../../", "https://books.toscrape.com/catalogue/"))
     return modified_url
 
-def category_extraction(url, filepath, category_name):
+def category_extraction(url, filepath, category_name, download_image):
     '''
     Takes the URL of a category, and the filepath to store the contents of the extraction in their own folder.
     '''
@@ -203,7 +204,7 @@ def category_extraction(url, filepath, category_name):
     for each in urls_to_seek:
         if SHOW_BOOK_URL_BEING_EXTRACTED:
             print("Extracting: " + each)
-        page_info = book_page_extractor(each, filepath)
+        page_info = book_page_extractor(each, filepath, download_image)
         convert_to_csv(page_info, filepath, category_name, no)
         no += 1
     return urls_to_seek
@@ -256,7 +257,7 @@ def scrape_category_info(url, filepath):
     return True
 
 # Function for Milestone 3/4
-def scrape_website(url):
+def scrape_website(url, download_image):
     '''
     Scrapes the books.toscrape website given its homepage.
     '''
@@ -275,7 +276,7 @@ def scrape_website(url):
             print("Folder already exists.")
         endpath = endpath + "/"
         print("Saving to " + endpath)
-        category_extraction(category_url, endpath, each[1])
+        category_extraction(category_url, endpath, each[1], download_image)
         print("Extraction for [" + each[1] + "] completed.")
         print(str(list_of_websites_to_scrape.__len__() - no) + " categories remain.")
         no += 1
@@ -287,4 +288,4 @@ try:
 except OSError as error:
     print("Folder already exists. Proceeding.")
 
-scrape_website(website_to_scrape)
+scrape_website(website_to_scrape, True)

@@ -247,6 +247,14 @@ def scrape_book_info(url, filepath):
     '''
     Scrapes a specific book information url and saves it to a csv.
     '''
+    downloadImage = False
+    try:
+        print("Preparing folder for single target extraction.")
+        os.mkdir(filepath)
+    except OSError as error:
+        print("Folder already exists. Proceeding.")
+    book_info = book_page_extractor(url, filepath, downloadImage)
+    convert_to_csv(book_info, filepath, "book_info", 0) #Last variable assumes that there's no preexisting header.
     return True
 
 # Function for Milestone 2
@@ -289,4 +297,5 @@ try:
 except OSError as error:
     print("Folder already exists. Proceeding.")
 
-scrape_website(website_to_scrape, True)
+# scrape_book_info(url, "extracted/demo")
+# scrape_website(website_to_scrape, True)

@@ -310,6 +310,5 @@ try:
 except OSError as error:
     print("Folder already exists. Proceeding.")
 
-# scrape_category_info(url2, "extracted")
-# scrape_book_info(url, "extracted/demo")
-scrape_website(website_to_scrape, True)
+if __name__ == "__main__":
+    scrape_website(website_to_scrape, True)

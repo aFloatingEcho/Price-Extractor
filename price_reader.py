@@ -260,6 +260,7 @@ def scrape_category_info(url, filepath):
 def scrape_website(url, download_image):
     '''
     Scrapes the books.toscrape website given its homepage.
+    download_image determines if the images will be downloaded or not.
     '''
     list_of_websites_to_scrape = list_of_categories(url)
     homepath = "extracted/"

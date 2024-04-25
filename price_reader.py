@@ -260,8 +260,21 @@ def scrape_book_info(url, filepath):
 # Function for Milestone 2
 def scrape_category_info(url, filepath):
     '''
-    SCrapes a specific category and saves it to a folder.
+    Scrapes a specific category and saves it to a folder.
     '''
+    category_info_get = requests.get(url)
+    category_info = BeautifulSoup(category_info_get.content, 'html.parser')
+    info = category_info.find_all("div",class_="page-header action")
+    category_name = info[0].get_text()
+    category_name = category_name.replace("\n", "")
+    save_location = filepath + "/" + category_name
+    try:
+        print("Preparing folder for [" + category_name + "] to store extraction.")
+        os.mkdir(save_location)
+        print("Folder created.")
+    except OSError as error:
+        print("Folder already exists.")
+    category_extraction(url, save_location, category_name, False)
     return True
 
 # Function for Milestone 3/4
@@ -297,5 +310,6 @@ try:
 except OSError as error:
     print("Folder already exists. Proceeding.")
 
+# scrape_category_info(url2, "extracted")
 # scrape_book_info(url, "extracted/demo")
-# scrape_website(website_to_scrape, True)
+scrape_website(website_to_scrape, True)

@@ -240,6 +240,22 @@ def list_of_categories(page_to_parse):
     print("Found " + str(no) + " categories. Beginning extraction.")
     return page_info
 
+
+# Function for Milestone 1
+def scrape_book_info(url, filepath):
+    '''
+    Scrapes a specific book information url and saves it to a csv.
+    '''
+    return True
+
+# Function for Milestone 2
+def scrape_category_info(url, filepath):
+    '''
+    SCrapes a specific category and saves it to a folder.
+    '''
+    return True
+
+# Function for Milestone 3/4
 def scrape_website(url):
     '''
     Scrapes the books.toscrape website given its homepage.

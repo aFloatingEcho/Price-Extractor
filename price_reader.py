@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup # Used for parsing the HTML we've obtained.
 import csv # Enable writing the data we've obtained into a file.
 import re #Enable the usage of regular expressions
 import os #Enable creating a folder if it doesn't exist!
-import string
+import string #Used to make sure that the files being saved are valid. 
 
 url = "https://books.toscrape.com/catalogue/sapiens-a-brief-history-of-humankind_996/index.html"
 file_path = 'output.csv'
